@@ -1,0 +1,33 @@
+Unity assety - Standard Unity EULA
+NPC - Fantasy Knight - https://assetstore.unity.com/packages/3d/characters/humanoids/fantasy/modular-fantasy-knight-character-276754
+Animace
+Movement - Basic motions - https://assetstore.unity.com/packages/p/basic-motions-free-154271
+Attack - RPG_Animations_Pack_Free - https://assetstore.unity.com/packages/3d/animations/rpg-animations-pack-free-288783
+
+
+
+
+Mixamo - royalty-free pro komerční i nekomerční použití
+Roll - Stand To Roll - https://www.mixamo.com/#/?page=1&query=stand+to+roll
+
+
+Sketchfab assets - CC atribution
+Hráč - Forgotten Knight - autor: dark_igorek - https://sketchfab.com/3d-models/the-forgotten-knight-d14eb14d83bd4e7ba7cbe443d76a10fd
+Aréna - Hell Arena - autor: 3DMAN - https://sketchfab.com/3d-models/hell-arena-b24597cc453a4919a97037be03abf38d - opraveno v Blenderu - invertnuté normály a další problémy
+
+
+Tutoriály
+UI 
+https://youtu.be/_jtj73lu2Ko?si=3zR2fQTpIYgWiLa0
+
+StateMachine
+https://youtu.be/RQd44qSaqww?si=IZH1xeGntv5hu2l4
+https://youtu.be/Vt8aZDPzRjI?si=ycRcLqbyXzmxMW2w
+
+Animace postav + pohyb 
+https://youtu.be/_J8RPIaO2Lc?si=OptDnkFO9fVLA2d-
+https://youtu.be/m8rGyoStfgQ?si=kWIE4Az9Ols0gZAa
+
+AI pohyb
+https://youtu.be/SMWxCpLvrcc?si=QAQk9M09m72OAv1w
+

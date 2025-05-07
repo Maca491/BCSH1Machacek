@@ -1,0 +1,7 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/main_screen_menu.uss?fileID=7433441132597879392&amp;guid=c46e4a5abb9fdef4187e042ae5482039&amp;type=3#main_screen_menu" />
+    <engine:VisualElement name="Container" class="root">
+        <engine:Button text="New Game" name="StartNewGameButton" class="button" />
+        <engine:Button text="Load Game" name="LoadGameButton" class="button" />
+    </engine:VisualElement>
+</engine:UXML>

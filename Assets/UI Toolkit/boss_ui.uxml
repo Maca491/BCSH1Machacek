@@ -1,0 +1,15 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/boss_ui_style.uss?fileID=7433441132597879392&amp;guid=8eff7622ff5edee44923725036193447&amp;type=3#boss_ui_style" />
+    <engine:VisualElement name="Container" style="flex-grow: 1;">
+        <engine:VisualElement name="hp-bar">
+            <engine:VisualElement class="bar-background" />
+            <engine:VisualElement class="bar-transition" />
+            <engine:VisualElement class="bar-fill" />
+        </engine:VisualElement>
+        <engine:VisualElement name="stamina-bar">
+            <engine:VisualElement class="bar-transition" />
+            <engine:VisualElement class="bar-background" />
+            <engine:VisualElement class="bar-fill" style="border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
