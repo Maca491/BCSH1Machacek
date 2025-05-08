@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 using Cursor = UnityEngine.Cursor;
 
 public class GameManager : MonoBehaviour
@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     #region PAUSE / RESUME
@@ -67,7 +69,7 @@ public class GameManager : MonoBehaviour
     public void ResetLevel()
     {
         SaveGame();
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         ResumeGame();
     }
 
@@ -80,26 +82,65 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("Loaded saved level: " + level);
                 currentLevel = level;
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Duel" + level);
+                SceneManager.LoadScene("Duel" + level);
             }
         }
     }
 
     public void LoadNextLevel()
     {
-        if (currentLevel == 3)
-        {
-            Debug.Log("All NPC levels defeated!");
-            //konec hry
-            return;
-        }
         currentLevel++;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Duel" + currentLevel);
-        
+        SceneManager.LoadScene("Duel" + currentLevel);
     }
 
     public void StartNewGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Duel" + currentLevel);
+        SceneManager.LoadScene("Duel" + currentLevel);
     }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        RegisterFighterDeathEvents();
+    }
+
+    //nenačte npc, protože se spawnují později
+    private void RegisterFighterDeathEvents()
+    {
+        Fighter[] fighters = FindObjectsByType<Fighter>(FindObjectsSortMode.None);
+        foreach (var fighter in fighters)
+        {
+            fighter.OnDeath += () => HandleFighterDeath(fighter);
+        }
+    }
+
+    // přidá event na smrt NPC
+    public void RegisterFighter(Fighter fighter)
+    {
+        fighter.OnDeath += () => HandleFighterDeath(fighter);
+    }
+
+    public void HandleFighterDeath(Fighter fighter)
+    {
+        if (fighter is Player)
+        {
+            Debug.Log("Player died!");
+            EndGame();
+        }else if(currentLevel == 3)
+        {
+            Debug.Log("Player defeated all NPCs!");
+            EndGame();
+        }
+        else if (fighter is Knight)
+        {
+            Debug.Log("NPC died!");
+            LoadNextLevel();
+        }
+    }
+
+    public void EndGame()
+    {
+        PauseGame();
+        Debug.Log("GAME OVER");
+    }
+
 }

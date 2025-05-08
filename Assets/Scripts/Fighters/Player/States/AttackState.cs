@@ -14,17 +14,16 @@ public class AttackState : State<Fighter>
             return;
         }
 
-        owner.ConsumeStamina(cost);
-        Debug.Log("Stamina now:" + owner.currentStamina);
-
-        owner.animator.applyRootMotion = true;
-        owner.animator.SetTrigger("attack");
-
         if(owner is Player player){
             player.NotifyNPCAttackStarted(); // <-- zde
             player.input.PlayerControls.Attack.Disable();
             player.input.PlayerControls.Roll.Disable();
         }
+
+        owner.ConsumeStamina(cost);
+
+        owner.animator.applyRootMotion = true;
+        owner.animator.SetTrigger("attack");
     }
 
     public override void Exit()

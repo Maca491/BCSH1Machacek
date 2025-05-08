@@ -6,7 +6,6 @@ public class RollingState : State<Fighter>
     public override void Enter()
     {
         owner.animator.applyRootMotion = true;
-        if(owner is Knight knight) Debug.Log("Roll started at:" + owner.currentStamina);
 
         float cost = 30f;
         owner.ConsumeStamina(cost);
@@ -27,7 +26,6 @@ public class RollingState : State<Fighter>
         owner.animator.ResetTrigger("startRoll");
         
         if(owner is Knight knight) {
-            Debug.Log("Remaining stamina:" + owner.currentStamina);
             knight.ResetReaction();    
         }
     }

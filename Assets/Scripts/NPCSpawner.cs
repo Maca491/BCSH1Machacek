@@ -10,11 +10,10 @@ public class NPCSpawner : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("NPC Spawner started.");
-        SpawnNextNPC();
+        SpawnNPC();
     }
 
-    public void SpawnNextNPC()
+    public void SpawnNPC()
     {
         if (GameManager.instance == null)
         {
@@ -25,11 +24,11 @@ public class NPCSpawner : MonoBehaviour
 
         currentNPC = Instantiate(npcPrefabs[currentLevel-1], spawnPoint.position, spawnPoint.rotation);
         Knight knight = currentNPC.GetComponentInChildren<Knight>();
-        Debug.Log("currentLevel: " + currentLevel);
         if (knight != null)
         {
-            knight.OnDeath += HandleNPCDeath;
+            GameManager.instance.RegisterFighter(knight);
         }
+
         knight.maxStamina = 30 * currentLevel; 
         knight.currentStamina = 30 * currentLevel; 
         knight.maxHealth = 50 * currentLevel; 
@@ -38,8 +37,4 @@ public class NPCSpawner : MonoBehaviour
         knight.reactionChance = 0.3f * currentLevel;
     }
 
-    private void HandleNPCDeath()
-    {
-        GameManager.instance.LoadNextLevel();
-    }
 }

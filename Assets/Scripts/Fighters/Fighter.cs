@@ -26,6 +26,8 @@ public abstract class Fighter : MonoBehaviour, IDamagable
     
     public Rigidbody rb { get; set; }
 
+    public event Action OnDeath;
+
     [SerializeField] private GameObject hurtBox; // hurtbox - když nás/nebo npc zasáhne útok
 
     [SerializeField] private GameObject hitBox; // hitbox - čím zasahujeme my/nebo npc
@@ -67,7 +69,7 @@ public abstract class Fighter : MonoBehaviour, IDamagable
 
     public void OnAttackAnimationComplete()
     {
-        stateMachine.ReturnToPreviousState();
+        stateMachine.ChangeState(new IdleState(this));
     }
 
     //zapínání vypínání i-framů
@@ -78,7 +80,6 @@ public abstract class Fighter : MonoBehaviour, IDamagable
     public void DisableHitBox() => hitBox.SetActive(false);
     public void EnableHitBox(){
         hitBox.SetActive(true); 
-    Debug.Log("Hitbox enabled");
     }
 
     public void LeaveRollState()
@@ -94,6 +95,4 @@ public abstract class Fighter : MonoBehaviour, IDamagable
     }
 
     #endregion
-
-    public event Action OnDeath;
 }

@@ -6,7 +6,6 @@ public class MoveState : State<Fighter>
 
     public override void Enter()
     {
-        Debug.Log("Entering Move State");
         owner.animator.SetBool("isWalking", true);
     }
 
@@ -21,7 +20,6 @@ public class MoveState : State<Fighter>
                 return;
             }
             if(player.runPressed && player.animator.GetBool("isRunning") == false && player.CanAct()){
-                Debug.Log("Running");
                 owner.ConsumeStamina(5f * Time.deltaTime);
                 owner.animator.SetBool("isRunning", true);
             }

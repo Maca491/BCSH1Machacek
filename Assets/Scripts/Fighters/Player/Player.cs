@@ -48,9 +48,6 @@ public class Player : Fighter
         rb = GetComponent<Rigidbody>();
 
         stateMachine = new StateMachine<Fighter>();
-        
-        Debug.Log("Player weapon at hip: " + weaponAtHip.name);
-        Debug.Log("Player weapon in hand: " + weaponInHand.name);
 
         currentHealth = maxHealth;
         currentStamina = maxStamina;
@@ -69,7 +66,6 @@ public class Player : Fighter
         };
 
         input.PlayerControls.Movement.canceled += ctx => {
-            Debug.Log("Movement canceled");
             movementPressed = false;
             runPressed = false;
             currentMovementInput = Vector2.zero;
