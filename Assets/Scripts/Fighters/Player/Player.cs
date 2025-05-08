@@ -11,9 +11,12 @@ public class Player : Fighter
     
     private int isRunningHash, isWalkingHash;
 
-    private Vector2 currentMovementInput;
+    public Vector2 currentMovementInput { get; private set; }
 
-    bool movementPressed, runPressed, isArmed;
+    public bool movementPressed { get; private set; }
+    
+    public bool runPressed { get; set; }
+    public bool isArmed { get; set; }
 
     private CinemachineCamera playerCamera;
 
@@ -60,13 +63,16 @@ public class Player : Fighter
         input.PlayerControls.Movement.performed += ctx => {
             currentMovementInput = ctx.ReadValue<Vector2>();
             movementPressed = currentMovementInput.x != 0 || currentMovementInput.y != 0;
-            if (stateMachine.IsInState<IdleState>()) {
+            if (!stateMachine.IsInState<MoveState>()) {
                 stateMachine.ChangeState(new MoveState(this));
             }
         };
 
         input.PlayerControls.Movement.canceled += ctx => {
+            Debug.Log("Movement canceled");
             movementPressed = false;
+            runPressed = false;
+            currentMovementInput = Vector2.zero;
         };
 
         input.PlayerControls.Run.performed += ctx => runPressed = true;
@@ -74,6 +80,7 @@ public class Player : Fighter
 
         input.PlayerControls.Roll.performed += ctx => {
             if (movementPressed && CanAct()) {
+                RotateImmediatelyToMovement();
                 stateMachine.ChangeState(new RollingState(this));
             }
         };
@@ -121,38 +128,16 @@ public class Player : Fighter
         }
     }
 
-    public override void MoveAndRotate()
+
+   void FixedUpdate()
     {
-        // směr běhu určuje kamera + vstup
-        Vector3 cameraForward = playerCamera.transform.forward;
-        cameraForward.y = 0;
-        cameraForward.Normalize();
-
-        Vector3 cameraRight = playerCamera.transform.right;
-        cameraRight.y = 0;
-        cameraRight.Normalize();
-
-        Vector3 targetDirection = cameraForward * currentMovementInput.y + cameraRight * currentMovementInput.x;
-
-        if (targetDirection.sqrMagnitude > 0.01f)
-        {
-            float speed = CanAct() & runPressed ? runSpeed : walkSpeed;
-            rb.linearVelocity = targetDirection.normalized * speed + new Vector3(0, rb.linearVelocity.y, 0);
-
-            // Otočíme hráče JEN pokud směr se změnil výrazně
-            float angle = Vector3.Angle(transform.forward, targetDirection);
-            if (angle > 30f) // můžeš doladit
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-            }
-        }
-        else
-        {
-            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+        //<---------------------- important ------------------------------>
+        //voláno z FixedUpdate, kvůli rigidbody a fyzice
+        //pro npc voláno z Update, kvůli agentovi
+        if(stateMachine.IsInState<MoveState>()){
+            MoveAndRotate();
         }
     }
-
 
     public void UpdatePlayerAnimator()
     {
@@ -192,7 +177,6 @@ public class Player : Fighter
         {
             if (!isFree)
             {
-                // Spusť smooth reset
                 if (resetCameraCoroutine != null)
                     StopCoroutine(resetCameraCoroutine);
 
@@ -200,7 +184,6 @@ public class Player : Fighter
             }
             else
             {
-                // Pokud odemykáme – zastavíme reset, ať se neruší uživatelské ovládání
                 if (resetCameraCoroutine != null)
                     StopCoroutine(resetCameraCoroutine);
             }
@@ -233,21 +216,15 @@ public class Player : Fighter
         orbitalFollow.HorizontalAxis.Value = targetHorizontal;
         orbitalFollow.VerticalAxis.Value = targetVertical;
     }
-
-    public Vector2 GetMovementInput()
-    {
-        return currentMovementInput;
-    }
-
     
     public void SpawnWeaponAtHip()
     {
-        StartCoroutine(SpawnWeaponWithFrameDelay(weaponAtHip, 2)); // 2 frame delay
+        StartCoroutine(SpawnWeaponWithFrameDelay(weaponAtHip, 2)); 
     }
 
     public void SpawnWeaponInHand()
     {
-        StartCoroutine(SpawnWeaponWithFrameDelay(weaponInHand, 2)); // 1 frame delay
+        StartCoroutine(SpawnWeaponWithFrameDelay(weaponInHand, 2));
     }
 
     private IEnumerator SpawnWeaponWithFrameDelay(Transform target, int frameDelay)
@@ -262,13 +239,55 @@ public class Player : Fighter
         currentWeapon.transform.localScale = Vector3.one;
     }
 
-    public bool isRunning()
-    {
-        return runPressed;
-    }
-
     public void NotifyNPCAttackStarted()
     {
         OnAttackStarted?.Invoke();
     }
+
+    public override void MoveAndRotate()
+    {
+        Vector3 cameraForward = playerCamera.transform.forward;
+        cameraForward.y = 0;
+        cameraForward.Normalize();
+
+        Vector3 cameraRight = playerCamera.transform.right;
+        cameraRight.y = 0;
+        cameraRight.Normalize();
+
+        Vector3 moveDir = cameraForward * currentMovementInput.y + cameraRight * currentMovementInput.x;
+        moveDir.Normalize();
+
+        float speed = CanAct() && runPressed ? runSpeed : walkSpeed;
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = moveDir.x * speed;
+        velocity.z = moveDir.z * speed;
+        rb.linearVelocity = velocity;
+
+        if (moveDir.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(moveDir);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime));
+        }
+    }
+
+    private void RotateImmediatelyToMovement()
+    {
+        Vector3 cameraForward = playerCamera.transform.forward;
+        cameraForward.y = 0;
+        cameraForward.Normalize();
+
+        Vector3 cameraRight = playerCamera.transform.right;
+        cameraRight.y = 0;
+        cameraRight.Normalize();
+
+        Vector3 targetDirection = cameraForward * currentMovementInput.y + cameraRight * currentMovementInput.x;
+
+        if (targetDirection.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+            transform.rotation = targetRotation; 
+        }
+    }
+
 }

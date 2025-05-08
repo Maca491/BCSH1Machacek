@@ -6,8 +6,9 @@ public class IdleState : State<Fighter>
 
     public override void Enter()
     {
-        owner.StopMovement();
-
+        Debug.Log("Entering Idle State");
+        owner.animator.SetBool("isWalking", false);
+        owner.animator.SetBool("isRunning", false);
         if(owner is Player player){
             player.SetCameraFreeLook(true);
         }

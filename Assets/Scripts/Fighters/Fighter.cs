@@ -83,6 +83,13 @@ public abstract class Fighter : MonoBehaviour, IDamagable
 
     public void LeaveRollState()
     {
+        if(this is Player player){
+            player.input.PlayerControls.Roll.Enable();
+            player.input.PlayerControls.Movement.Enable();
+            player.input.PlayerControls.Run.Enable();
+            player.input.PlayerControls.Attack.Enable();
+            player.input.PlayerControls.Drawweapon.Enable();
+        }
         stateMachine.ChangeState(new IdleState(this));
     }
 

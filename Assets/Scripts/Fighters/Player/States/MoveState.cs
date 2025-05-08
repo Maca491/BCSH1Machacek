@@ -4,35 +4,32 @@ public class MoveState : State<Fighter>
 {
     public MoveState(Fighter owner) : base(owner){}
 
+    public override void Enter()
+    {
+        Debug.Log("Entering Move State");
+        owner.animator.SetBool("isWalking", true);
+    }
+
     public override void Update()
     {
         if(owner is Player player){
-            Vector2 input = player.GetMovementInput();
+            Vector2 input = player.currentMovementInput;
 
             if (input == Vector2.zero)
             {
                 owner.stateMachine.ChangeState(new IdleState(owner));
                 return;
             }
-
-            if(player.isRunning()){
+            if(player.runPressed && player.animator.GetBool("isRunning") == false && player.CanAct()){
+                Debug.Log("Running");
                 owner.ConsumeStamina(5f * Time.deltaTime);
-                owner.animator.SetBool("isWalking", true);
                 owner.animator.SetBool("isRunning", true);
-            }else {
-                owner.animator.SetBool("isWalking", true);
-                owner.animator.SetBool("isRunning", false);
             }
         } else if(owner is Knight knight){
-            /*if (knight.CanAct()){
-                owner.ConsumeStamina(5f * Time.deltaTime);
-                knight.Run();
-            } else {
-                knight.Walk();
-            }*/
             knight.Walk();
+            //pro hráče se bude volat z FixedUpdate, kvůli rigidbody
+            knight.MoveAndRotate();
         }
-        owner.MoveAndRotate();  
     }
 
 

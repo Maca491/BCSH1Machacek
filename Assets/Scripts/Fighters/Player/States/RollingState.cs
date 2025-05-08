@@ -5,6 +5,7 @@ public class RollingState : State<Fighter>
 
     public override void Enter()
     {
+        owner.animator.applyRootMotion = true;
         if(owner is Knight knight) Debug.Log("Roll started at:" + owner.currentStamina);
 
         float cost = 30f;
@@ -17,19 +18,11 @@ public class RollingState : State<Fighter>
             player.input.PlayerControls.Attack.Disable();
             player.input.PlayerControls.Drawweapon.Disable();
         }
-        owner.animator.applyRootMotion = true;
         owner.animator.SetTrigger("startRoll");
     }
 
     public override void Exit()
     {
-        if(owner is Player player){
-            player.input.PlayerControls.Roll.Enable();
-            player.input.PlayerControls.Movement.Enable();
-            player.input.PlayerControls.Run.Enable();
-            player.input.PlayerControls.Attack.Enable();
-            player.input.PlayerControls.Drawweapon.Enable();
-        }
         owner.animator.applyRootMotion = false;
         owner.animator.ResetTrigger("startRoll");
         

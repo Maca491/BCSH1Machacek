@@ -16,6 +16,11 @@ public class NPCSpawner : MonoBehaviour
 
     public void SpawnNextNPC()
     {
+        if (GameManager.instance == null)
+        {
+            Debug.LogError("GameManager instance is null. Cannot spawn NPC.");
+            return;
+        }
         int currentLevel = GameManager.instance.currentLevel;
 
         currentNPC = Instantiate(npcPrefabs[currentLevel-1], spawnPoint.position, spawnPoint.rotation);

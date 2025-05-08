@@ -11,7 +11,7 @@ public class Knight : Fighter
     [SerializeField] private float attackDistance = 2.0f;
 
     //[HideInInspector]
-    public float reactionChance = 0.3f; // výchozí 30 %, lze přepsat při spawnu
+    public float reactionChance { get; set;}
 
     private void Awake()
     {
@@ -20,7 +20,7 @@ public class Knight : Fighter
         stateMachine = new StateMachine<Fighter>();
         animator.SetBool("isArmed", true);
         playerTarget = FindFirstObjectByType<Player>().transform;
-        //najdi playera podle tagu
+        //najdi hráče podle tagu
         playerTarget = GameObject.FindGameObjectWithTag("Player").transform;
         currentHealth = maxHealth;
         currentStamina = maxStamina;
@@ -119,10 +119,5 @@ public class Knight : Fighter
     public void ResetReaction()
     {
         hasReactedToAttack = false;
-    }
-
-    public NavMeshAgent GetNavMeshAgent()
-    {
-        return agent;
     }
 }
