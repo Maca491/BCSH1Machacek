@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class NPCSpawner : MonoBehaviour
 {
-    public GameObject[] npcPrefabs;  // Prefaby seřazené podle obtížnosti
+    [SerializeField] private GameObject[] npcPrefabs;  // Prefaby seřazené podle obtížnosti
 
     [SerializeField] public Transform spawnPoint;
 
     private GameObject currentNPC;
+
+    [SerializeField] private GameObject npcUI;
 
     private void Start()
     {
@@ -36,5 +38,4 @@ public class NPCSpawner : MonoBehaviour
         knight.damage = 2 * (currentLevel * currentLevel + 2); 
         knight.reactionChance = 0.3f * currentLevel;
     }
-
 }

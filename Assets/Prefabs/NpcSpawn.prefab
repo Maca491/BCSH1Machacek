@@ -49,3 +49,4 @@ MonoBehaviour:
   - {fileID: 3213236592459961524, guid: c61ab88215c4c9e44b0896dca45ac1b1, type: 3}
   - {fileID: 7931513354460727491, guid: 657f075dc69febc429e3ac6af88a9fcc, type: 3}
   spawnPoint: {fileID: 6791914620142748440}
+  npcUI: {fileID: 7075603242106050420, guid: 925480e8fdf9eb14f9ee3f610910e92c, type: 3}
