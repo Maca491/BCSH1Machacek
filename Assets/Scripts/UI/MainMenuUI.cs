@@ -17,8 +17,7 @@ public class MainMenuUI : MonoBehaviour
 
         newGameButton.clicked += () =>
         {
-            GameManager.instance.currentLevel = 1;
-            SceneManager.LoadScene("Duel");
+            GameManager.instance.StartNewGame();
         };
 
         loadGameButton.clicked += () =>

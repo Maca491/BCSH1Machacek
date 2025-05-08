@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
-
     }
 
     #region PAUSE / RESUME
@@ -81,8 +80,26 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("Loaded saved level: " + level);
                 currentLevel = level;
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Duel");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Duel" + level);
             }
         }
+    }
+
+    public void LoadNextLevel()
+    {
+        if (currentLevel == 3)
+        {
+            Debug.Log("All NPC levels defeated!");
+            //konec hry
+            return;
+        }
+        currentLevel++;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Duel" + currentLevel);
+        
+    }
+
+    public void StartNewGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Duel" + currentLevel);
     }
 }

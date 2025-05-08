@@ -3,6 +3,7 @@ using UnityEngine;
 public class NPCSpawner : MonoBehaviour
 {
     public GameObject[] npcPrefabs;  // Prefaby seřazené podle obtížnosti
+
     [SerializeField] public Transform spawnPoint;
 
     private GameObject currentNPC;
@@ -16,11 +17,6 @@ public class NPCSpawner : MonoBehaviour
     public void SpawnNextNPC()
     {
         int currentLevel = GameManager.instance.currentLevel;
-        if (currentLevel > npcPrefabs.Length)
-        {
-            Debug.Log("All NPC levels defeated!");
-            return;
-        }
 
         currentNPC = Instantiate(npcPrefabs[currentLevel-1], spawnPoint.position, spawnPoint.rotation);
         Knight knight = currentNPC.GetComponentInChildren<Knight>();
@@ -39,7 +35,6 @@ public class NPCSpawner : MonoBehaviour
 
     private void HandleNPCDeath()
     {
-        GameManager.instance.currentLevel++;
-        SpawnNextNPC();
+        GameManager.instance.LoadNextLevel();
     }
 }
