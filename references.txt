@@ -13,12 +13,19 @@ Roll - Stand To Roll - https://www.mixamo.com/#/?page=1&query=stand+to+roll
 
 Sketchfab assets - CC atribution
 Hráč - Forgotten Knight - autor: dark_igorek - https://sketchfab.com/3d-models/the-forgotten-knight-d14eb14d83bd4e7ba7cbe443d76a10fd
-Aréna - Hell Arena - autor: 3DMAN - https://sketchfab.com/3d-models/hell-arena-b24597cc453a4919a97037be03abf38d - opraveno v Blenderu - invertnuté normály a další problémy
-
+Aréna 1 - Hell Arena - autor: 3DMAN - https://sketchfab.com/3d-models/hell-arena-b24597cc453a4919a97037be03abf38d 
+Aréna 2 - Geonosis Arena - autor: StrangeUsernames1 - https://sketchfab.com/3d-models/geonosis-arena-797d475ee192467399c0ee6ee15b41ed
+Aréna 3 - Chamber of secrets - autor: zack_graham - https://sketchfab.com/3d-models/chamber-of-secrets-3b462862683e49869ccebe8d1ce85028
+- opraveno v Blenderu - invertnuté normály a další problémy
+- Tajemná komnata potřebuje ještě víc práce
 
 Tutoriály
 UI 
 https://youtu.be/_jtj73lu2Ko?si=3zR2fQTpIYgWiLa0
+https://youtu.be/5O5DJeCsNWk?si=CO2hqrgynO_mJO18
+
+Fix pohybu, lepší rigid body fyzika
+https://www.youtube.com/watch?v=6FitlbrpjlQ&ab_channel=Gatsby
 
 StateMachine
 https://youtu.be/RQd44qSaqww?si=IZH1xeGntv5hu2l4
